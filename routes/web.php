@@ -34,7 +34,3 @@ require __DIR__.'/auth.php';
 
 // for admin
 Route::get('admin/login', [AdminController::class , 'login'])->name('admin.login');
-
-Route::get('admin/profile', function(){
-    return view('admin.profile.index');
-});
