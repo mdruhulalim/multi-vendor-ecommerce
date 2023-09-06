@@ -33,3 +33,6 @@ require __DIR__.'/auth.php';
 
 // for admin
 Route::get('admin/login', [AdminController::class , 'login'])->name('admin.login');
+
+
+// the test change is for dev1
