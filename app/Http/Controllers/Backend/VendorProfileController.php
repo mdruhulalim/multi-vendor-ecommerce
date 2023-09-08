@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use File;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class VendorProfileController extends Controller
 {
-    // for show profile page
     public function index(){
-        return view('admin.profile.index');
+        return view('vendor.dashboard.profile');
     }
 
-    // for update profile info
-    public function updateProfile(Request $request){
+    // for update user info
+    public function profileUpdate(Request $request){
         $request->validate([
             'image'  =>  ['image', 'max:2048'],
             'name'  =>  ['required', 'max:100'],
@@ -49,13 +48,13 @@ class ProfileController extends Controller
         $user->save();
 
         // Display an success toast with no title
-        toastr()->success('Profile updated successfull');
+        toastr()->success('Profile updated successfully');
         // for return
         return redirect()->back();
     }
 
     // for update password
-    public function updatePassword(Request $request){
+    public function passwordUpdate(Request $request){
         // for valitation password fields
         $request->validate([
             'current_password'  =>  ['required', 'current_password'],
