@@ -37,4 +37,11 @@ trait ImageUploadTrait{
         }
 
     }
+
+    public function deleteImage(string $path){
+        // delete previous image
+        if(File::exists(public_path($path))){
+            File::delete(public_path($path));
+        }
+    }
 }
