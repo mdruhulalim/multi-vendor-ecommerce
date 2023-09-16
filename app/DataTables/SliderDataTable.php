@@ -28,7 +28,6 @@ class SliderDataTable extends DataTable
                 return $editBtn.$deleteBtn;
             })
             ->addColumn('banner', function($query) {
-                // Corrected code to display the image
                 return $img = "<img width='100px' src='" . asset($query->banner) . "'></img>";
             })
             ->rawColumns(['banner','action'])

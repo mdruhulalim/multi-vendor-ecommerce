@@ -94,6 +94,7 @@
     <!-- Template JS File -->
     <script src="{{ asset('backend/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
+
     {{-- for toast --}}
     <script>
         @if ($errors->any())
@@ -102,20 +103,23 @@
             @endforeach
         @endif
     </script>
-    {{-- dynamic delete alert --}}
+
+    <!-- Dynamic Delete alart -->
     <script>
         $(document).ready(function() {
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
+
             $('body').on('click', '.delete-item', function(event) {
                 event.preventDefault();
-                // get dynamic url
+
                 let deleteUrl = $(this).attr('href');
-                // for confirm delete alert
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -126,32 +130,41 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $.ajex({
+
+                        $.ajax({
                             type: 'DELETE',
                             url: deleteUrl,
+
                             success: function(data) {
-                                console.log(data);
+
+                                if (data.status == 'success') {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        data.message,
+                                        'success'
+                                    )
+                                    window.location.reload();
+                                } else if (data.status == 'error') {
+                                    Swal.fire(
+                                        'Cant Delete',
+                                        data.message,
+                                        'error'
+                                    )
+                                }
                             },
                             error: function(xhr, status, error) {
-                                colsole.log(error);
+                                console.log(error);
                             }
                         })
-
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
                     }
                 })
             })
+
         })
     </script>
+
     {{-- dynamic script --}}
     @stack('scripts')
 </body>
 
 </html>
-
-{{-- a simple update from master --}}
-{{-- a simple update from master --}}
