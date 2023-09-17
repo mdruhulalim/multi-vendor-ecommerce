@@ -15,3 +15,5 @@ Route::post('profile/update/password', [ProfileController::class, 'updatePasswor
 
 // for Slider
 Route::resource('slider', SliderController::class);
+
+// for test update
