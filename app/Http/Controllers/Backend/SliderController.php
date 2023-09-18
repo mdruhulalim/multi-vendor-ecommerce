@@ -57,7 +57,7 @@ class SliderController extends Controller
 
         toastr('Slider created successfully!', 'success');
 
-        return redirect()->back();
+        return redirect()->route('admin.slider.index');
     }
 
     /**
