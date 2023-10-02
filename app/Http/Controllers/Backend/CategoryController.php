@@ -46,7 +46,7 @@ class CategoryController extends Controller
         $cagetory->status = $request->status;
         $cagetory->save();
 
-        toastr('Categor created successfully!', 'success');
+        toastr('Category created successfully!', 'success');
 
         return redirect()->route('admin.category.index');
     }
@@ -64,7 +64,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -72,7 +73,24 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'icon'  =>  ['required', 'not_in:empty'],
+            'name'  =>  ['required', 'max:200', 'unique:categories,name,'.$id],
+            'status'    =>  ['required']
+        ]);
+
+        $cagetory = Category::findOrFail($id);
+
+        $cagetory->icon =   $request->icon;
+        $cagetory->name =   $request->name;
+        $cagetory->slug =   $request->slug;
+        $cagetory->slug =   Str::slug($request->name);
+        $cagetory->status = $request->status;
+        $cagetory->save();
+
+        toastr('Category Updated successfully!', 'success');
+
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -80,6 +98,18 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $cagetory = Category::findOrFail($id);
+        $cagetory->delete();
+        return response(['status' => 'success', 'message' => 'Deleted successfully']);
+    }
+
+    // change status in one clink
+    public function changeStatus(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+        $category->status = $request->status == 'true' ? 1 : 0;
+        $category->save();
+
+        return response(['message' => 'Status has been updated!']);
     }
 }
