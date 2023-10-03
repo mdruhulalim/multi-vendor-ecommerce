@@ -41,13 +41,11 @@ class CategoryController extends Controller
 
         $cagetory->icon =   $request->icon;
         $cagetory->name =   $request->name;
-        $cagetory->slug =   $request->slug;
         $cagetory->slug =   Str::slug($request->name);
         $cagetory->status = $request->status;
         $cagetory->save();
 
         toastr('Category created successfully!', 'success');
-
         return redirect()->route('admin.category.index');
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoryDataTable extends DataTable
+class SubCategoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,15 +21,15 @@ class CategoryDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-            return (new EloquentDataTable($query))
+        return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
-                $editBtn = "<a href='".route('admin.category.edit', $query->id)."' class='btn btn-primary'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a href='".route('admin.category.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
+                $editBtn = "<a href='".route('admin.sub-category.edit', $query->id)."' class='btn btn-primary'><i class='far fa-edit'></i></a>";
+                $deleteBtn = "<a href='".route('admin.sub-category.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
 
                 return $editBtn.$deleteBtn;
             })
-            ->addColumn('icon', function($query){
-                return '<i style="font-size:30px;" class="'.$query->icon.'"></i>';
+            ->addColumn('category', function($query){
+                return $query->category->name;
             })
             ->addColumn('status', function($query){
                 if($query->status == 1){
@@ -45,14 +45,14 @@ class CategoryDataTable extends DataTable
                 }
                 return $button;
             })
-            ->rawColumns(['icon', 'action', 'status'])
+            ->rawColumns(['action', 'category','status'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Category $model): QueryBuilder
+    public function query(SubCategory $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -63,7 +63,7 @@ class CategoryDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('category-table')
+                    ->setTableId('subcategory-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -85,10 +85,11 @@ class CategoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            
             Column::make('id'),
-            Column::make('icon'),
             Column::make('name'),
             Column::make('slug'),
+            Column::make('category'),
             Column::make('status')->width(200),
             Column::computed('action')
                   ->exportable(false)
@@ -103,6 +104,6 @@ class CategoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Category_' . date('YmdHis');
+        return 'SubCategory_' . date('YmdHis');
     }
 }
