@@ -21,8 +21,12 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/ranger_style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/jquery.classycountdown.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/venobox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
     {{-- for toastr --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
@@ -35,7 +39,7 @@
     <!--=============================
     DASHBOARD MENU START
   ==============================-->
-    @include('vendor.dashboard.layouts.menu')
+    @include('vendor.layouts.menu')
     <!--=============================
     DASHBOARD MENU END
   ==============================-->
@@ -97,17 +101,37 @@
     <script src="{{ asset('frontend/js/jquery.classycountdown.js') }}"></script>
     {{-- toastr --}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    {{-- jQuery datatable --}}
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    {{-- date picker --}}
+    <script src="{{ asset('backend/assets/modules/moment.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/modules/summernote/summernote-bs4.js') }}"></script>
 
     <!--main/custom js-->
     <script src="{{ asset('frontend/js/main.js') }}"></script>
     {{-- for toast --}}
     <script>
+      // for summer note
+      $('.summernote').summernote({
+        height: 150
+      })
+      // for date picker
+      $('.datepicker').daterangepicker({
+        locale: {
+          format: 'YYYY-MM-DD'
+        },
+        singleDatePicker: true
+      });
+      // for any error
         @if ($errors->any())
             @foreach ($errors->all() as $error)
                 toastr.error("{{ $error }}")
             @endforeach
         @endif
     </script>
+    @stack('scripts')
 </body>
 
 </html>
